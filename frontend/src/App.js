@@ -60,7 +60,7 @@ function App() {
       }
     }
 
-  },[authUser , dispatch , socket]);
+  },[authUser , dispatch ]);
 
   return (
     <div className=" h-screen flex items-center justify-center">
