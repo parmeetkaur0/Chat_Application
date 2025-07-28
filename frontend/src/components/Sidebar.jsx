@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setAuthUser, setOtherUsers, setSelectedUser } from '../redux/userSlice';
 import { setMessages } from '../redux/messageSlice';
-import { BASE_URL } from '..';
 import { AiOutlineClose } from "react-icons/ai";  // <-- Import X Icon
 
 const Sidebar = () => {
@@ -34,7 +33,7 @@ const Sidebar = () => {
 
     const logoutHandler = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/api/v1/user/logout`);
+            const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/v1/user/logout`);
             navigate("/login");
             toast.success(res.data.message);
             dispatch(setAuthUser(null));

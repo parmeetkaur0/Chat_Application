@@ -19,7 +19,7 @@ const Signup = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${process.env.BASE_URL}/api/v1/user/register`, user, {
+      const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/v1/user/register`, user, {
         headers: {
           'Content-Type': 'application/json'
         },

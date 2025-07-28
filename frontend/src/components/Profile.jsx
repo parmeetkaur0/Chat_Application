@@ -30,7 +30,7 @@ const ProfilePage = () => {
 
     const handleUpdate = async () => {
         try {
-            const res = await axios.put(`${process.env.BASE_URL}/api/v1/user/updateProfile`, updatedUser, {
+            const res = await axios.put(`${process.env.REACT_APP_BASE_URL}/api/v1/user/updateProfile`, updatedUser, {
                 withCredentials: true
             });
             dispatch(setAuthUser(res.data.updatedUser));
