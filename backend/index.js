@@ -1,5 +1,4 @@
-// const express = require('express')// method-1
-import express from "express"; // method-2
+import express from "express"; 
 import dotenv from "dotenv"; 
 import connectDB from "./config/database.js";
 import userRoute from "./routes/userRoute.js";
@@ -18,6 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 const corsOption={
     origin:'http://localhost:3000',
+    origin: process.env.BASE_URL,
     credentials:true
 };
 app.use(cors(corsOption)); 

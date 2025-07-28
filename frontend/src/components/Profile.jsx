@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { setAuthUser } from '../redux/userSlice';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { BASE_URL } from '..';
 import { FiEdit, FiSave, FiArrowLeft } from 'react-icons/fi';
 
 const ProfilePage = () => {
@@ -31,7 +30,7 @@ const ProfilePage = () => {
 
     const handleUpdate = async () => {
         try {
-            const res = await axios.put(`${BASE_URL}/api/v1/user/updateProfile`, updatedUser, {
+            const res = await axios.put(`${process.env.BASE_URL}/api/v1/user/updateProfile`, updatedUser, {
                 withCredentials: true
             });
             dispatch(setAuthUser(res.data.updatedUser));
