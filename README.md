@@ -29,41 +29,52 @@ A simple and modern real-time chat web application built with **React.js**, **No
 ---
 
 ## 📂 Folder Structure
-- /frontend -> React Frontend
-- /backend -> Node.js Backend
+/frontend -> React Frontend
+/backend -> Node.js Backend
+
+yaml
+Copy
+Edit
+
 ---
 
 ## ⚙️ Installation & Setup Guide
 
 ### 1. Clone the Repository
 ```bash
-- git clone https://github.com/parmeetkaur0/Chat_Application.git
-- cd Chat_Application
-
-### 2. Setup Backend
-```bash
-- cd backend
-- npm install
-
-### 3. Create .env file in /backend
-
-- PORT=5000
-- MONGO_URI=your_mongodb_uri
-- JWT_SECRET_KEY=your_secret_key
+git clone https://github.com/parmeetkaur0/Chat_Application.git
+cd Chat_Application
+2. Setup Backend
+bash
+Copy
+Edit
+cd backend
+npm install
+3. Create .env file in /backend
+env
+Copy
+Edit
+PORT=5000
+MONGO_URI=your_mongodb_uri
+JWT_SECRET_KEY=your_secret_key
 4. Run Backend Server
-- npm server.js
+bash
+Copy
+Edit
+npm run server
 5. Setup Frontend
-
-- cd ../frontend
-- npm install
-- npm start
+bash
+Copy
+Edit
+cd ../frontend
+npm install
+npm start
 6. Open in Browser
-
-- http://localhost:3000
-
----
-
-## 🗂️ API Endpoints (Backend)
+arduino
+Copy
+Edit
+http://localhost:3000
+🗂️ API Endpoints (Backend)
 Method	Route	Description
 POST	/api/v1/user/register	Register New User
 POST	/api/v1/user/login	Login User
@@ -73,20 +84,17 @@ POST	/api/v1/message/send/:id	Send Message to User
 GET	/api/v1/message/get/:id	Get All Messages with User
 PUT	/api/v1/user/update-profile	Update Profile Details
 
----
-
-### 📄 Environment Variables
+📄 Environment Variables
 Variable	Description
 PORT	Server Port
 MONGO_URI	MongoDB Connection URI
 JWT_SECRET_KEY	Secret Key for JWT
----
-## 🖼️ Screenshots
-<img width="1875" height="885" alt="image" src="https://github.com/user-attachments/assets/bcc26be8-bc68-4f84-a7fd-c6744bcbe8bb" />
-<img width="1917" height="879" alt="image" src="https://github.com/user-attachments/assets/8283d0a5-abee-4aa6-a167-d15b1b68bf57" />
 
----
-## 💡 Future Enhancements
+🖼️ Screenshots
+
+
+
+💡 Future Enhancements
 Group Chats / Channels
 
 Media Sharing (Images, Videos)
@@ -104,7 +112,3 @@ Parmeet Kaur (@parmeetkaur0)
 
 ⭐ Show Your Support
 If you like this project, consider giving it a ⭐ star on GitHub!
-
----
-
-
