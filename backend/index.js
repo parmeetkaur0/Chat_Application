@@ -16,8 +16,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json()); 
 app.use(cookieParser());
 const corsOption={
-    origin:'http://localhost:3000',
-    origin: process.env.BASE_URL,
+    origin:['http://localhost:3000','https://chat-application-xi-nine.vercel.app','https://chat-application-git-main-parmeet-kaurs-projects.vercel.app'],
     credentials:true
 };
 app.use(cors(corsOption)); 
