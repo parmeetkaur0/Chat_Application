@@ -9,6 +9,7 @@ import { useEffect} from 'react';
 import {useSelector,useDispatch} from "react-redux";
 import io from "socket.io-client";
 import { setSocket } from './redux/socketSlice';
+import { setNotification } from "./redux/notificationSlice";
 import { setOnlineUsers } from './redux/userSlice';
 
 const router = createBrowserRouter([
@@ -40,6 +41,8 @@ function App() {
   const {socket} = useSelector(store=>store.socket);
   const dispatch = useDispatch();
 
+ 
+
   useEffect(()=>{
     if(authUser){
       const socketio = io(`${process.env.REACT_APP_BASE_URL}`, {
@@ -61,6 +64,23 @@ function App() {
     }
 
   },[authUser , dispatch ]);
+
+  useEffect(() => {
+        if (!socket) return;  // 🚨 Prevent attaching listener to null
+
+        const handleNewMessage = (message) => {
+            console.log("Received newMessage via socket:", message);
+            dispatch(setNotification(message));
+        };
+
+        socket.on('newMessage', handleNewMessage);
+
+        return () => {
+            socket.off('newMessage', handleNewMessage);
+        };
+    }, [socket, dispatch]);
+
+    
 
   return (
     <div className=" h-screen flex items-center justify-center">

@@ -8,11 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setAuthUser, setOtherUsers, setSelectedUser } from '../redux/userSlice';
 import { setMessages } from '../redux/messageSlice';
-import { AiOutlineClose } from "react-icons/ai";  // <-- Import X Icon
+import { clearNotificationFromUser } from '../redux/notificationSlice';
+import { AiOutlineClose } from "react-icons/ai"; 
 
 const Sidebar = () => {
     const [search, setSearch] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const { notifications } = useSelector(store => store.notification);
     const [theme, setTheme] = useState(() => {
         return localStorage.getItem('theme') || 'light';
     });
@@ -29,6 +31,12 @@ const Sidebar = () => {
 
     const toggleTheme = () => {
         setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    };
+
+    const onUserSelect = (user) => {
+        dispatch(setSelectedUser(user));
+        dispatch(clearNotificationFromUser(user._id));
+        dispatch(setMessages([]));
     };
 
     const logoutHandler = async () => {
@@ -50,7 +58,6 @@ const Sidebar = () => {
     };
 
     useEffect(() => {
-        // Initially show all users
         setFilteredUsers(otherUsers);
     }, [otherUsers]);
 
@@ -58,11 +65,11 @@ const Sidebar = () => {
         e.preventDefault();
 
         if (search.trim() === "") {
-            setFilteredUsers(otherUsers);  // Reset to all users
+            setFilteredUsers(otherUsers);
             return;
         }
 
-        const matchedUsers = otherUsers.filter((user) =>
+        const matchedUsers =  (otherUsers || []).filter((user) =>
             user.fullName.toLowerCase().includes(search.toLowerCase())
         );
 
@@ -80,7 +87,7 @@ const Sidebar = () => {
                     <input
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className='input input-bordered rounded-md bg-gray-100 text-black dark:bg-gray-800 dark:text-white w-full pr-10' 
+                        className='input input-bordered rounded-md bg-gray-100 text-black dark:bg-gray-800 dark:text-white w-full pr-10'
                         type="text"
                         placeholder='Search...'
                     />
@@ -89,7 +96,7 @@ const Sidebar = () => {
                             className="absolute right-3 top-1/2 transform -translate-y-1/2 dark:text-white text-black cursor-pointer w-5 h-5"
                             onClick={() => {
                                 setSearch("");
-                                setFilteredUsers(otherUsers);  
+                                setFilteredUsers(otherUsers);
                             }}
                         />
                     )}
@@ -101,7 +108,11 @@ const Sidebar = () => {
 
 
             <div className="divider px-3"></div>
-            <OtherUsers users={filteredUsers} />
+            <OtherUsers
+               users={filteredUsers || []} 
+               notifications={notifications || []} 
+                onUserSelect={onUserSelect}  
+            />
 
             <div className="divider bottom-10 px-2">
                 <div className='mt-2'>

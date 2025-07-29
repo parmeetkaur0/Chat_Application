@@ -2,6 +2,7 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import userReducer from "./userSlice.js";
 import messageReducer from "./messageSlice.js";
 import socketReducer from "./socketSlice.js";
+import notificationReducer from "./notificationSlice.js";
 import {
     persistReducer,
     FLUSH,
@@ -27,7 +28,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   message: messageReducer,
-  socket: socketReducer, // will not be persisted
+  socket: socketReducer, 
+  notification: notificationReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -38,7 +40,7 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, setSocket.type],
-        ignoredPaths: ['socket.socket'], // ⚠️ important
+        ignoredPaths: ['socket.socket'], 
       },
     }),
 });

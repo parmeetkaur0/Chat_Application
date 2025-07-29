@@ -1,30 +1,52 @@
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from '../redux/userSlice';
+import { clearNotificationFromUser } from "../redux/notificationSlice";
 
-const OtherUser = ({ user }) => {
+const OtherUser = ({ user, notifications = [], onUserSelect = () => {} }) => {
     const dispatch = useDispatch();
-    const {selectedUser, onlineUsers} = useSelector(store=>store.user);
+    const { selectedUser, onlineUsers } = useSelector(store => store.user);
+
     const isOnline = onlineUsers?.includes(user._id);
-    const selectedUserHandler = (user) => {
+    const notificationCount = notifications.filter(n => n.senderId === user._id).length;
+
+    const selectedUserHandler = () => {
+        onUserSelect(user);  // <-- Parent handler
         dispatch(setSelectedUser(user));
-    }
+        dispatch(clearNotificationFromUser(user._id));
+    };
+
     return (
         <>
-            <div onClick={() => selectedUserHandler(user)} className={` ${selectedUser?._id === user?._id ? 'bg-gray-200 border border-gray-900 text-black dark:bg-gray-600 dark:text-white dark:border-none ' : 'text-black dark:text-white'} flex gap-2 hover:text-black hover:dark:text-white hover:dark:bg-gray-600 items-center hover:bg-gray-200 rounded p-2 cursor-pointer`}>
-                <div className={`avatar ${isOnline ? 'online' : '' }`}>
+            <div
+                onClick={selectedUserHandler}
+                className={`relative flex items-center gap-2 rounded p-2 cursor-pointer ${
+                    selectedUser?._id === user?._id
+                        ? 'bg-gray-200 border border-gray-900 text-black dark:bg-gray-600 dark:text-white dark:border-none'
+                        : 'text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
+                }`}
+                style={{ overflow: 'visible' }}  // <--- Ensure no clipping
+            >
+                <div className={`avatar ${isOnline ? 'online' : ''}`}>
                     <div className='w-12 rounded-full'>
                         <img src={user?.profilePhoto} alt="user-profile" />
                     </div>
                 </div>
                 <div className='flex flex-col flex-1'>
-                    <div className='flex justify-between gap-2 '>
-                        <p>{user?.fullName}</p>
-                    </div>
+                    <p>{user?.fullName}</p>
                 </div>
+
+                {/* Notification Badge */}
+                {notificationCount > 0 && (
+                    <div className="absolute top-0 right-0 -mt-1 -mr-1 z-10">
+                        <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full shadow-md">
+                            {notificationCount}
+                        </span>
+                    </div>
+                )}
             </div>
             <div className='divider my-0 py-0 h-1'></div>
         </>
-    )
-}
+    );
+};
 
-export default OtherUser
+export default OtherUser;
