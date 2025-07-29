@@ -12,8 +12,8 @@ const isAuthenticated = async (req, res, next) => {
             return res.status(401).json({ message: "Invalid token" });
         }
 
-        req.id = decode.userId;  // <-- Ensure decode.userId exists in your token payload
-        // console.log("Authenticated user id:", req.id);
+        req.id = decode.userId;  
+        console.log("Authenticated user id:", req.id);
         next();
     } catch (error) {
         console.log(error);
