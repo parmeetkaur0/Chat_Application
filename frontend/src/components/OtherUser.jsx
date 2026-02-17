@@ -7,7 +7,9 @@ const OtherUser = ({ user, notifications = [], onUserSelect = () => { } }) => {
     const { selectedUser, onlineUsers } = useSelector(store => store.user);
 
     const isOnline = onlineUsers?.includes(user._id);
-    const notificationCount = notifications.filter(n => n.senderId === user._id).length;
+   const notificationCount = notifications.filter(
+        n => n.senderId?.toString() === user._id?.toString()
+    ).length;
 
     const selectedUserHandler = () => {
         onUserSelect(user);  

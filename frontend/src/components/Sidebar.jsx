@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setAuthUser, setOtherUsers, setSelectedUser } from '../redux/userSlice';
 import { setMessages } from '../redux/messageSlice';
 import { clearNotificationFromUser } from '../redux/notificationSlice';
-import { AiOutlineClose } from "react-icons/ai"; 
+import { AiOutlineClose } from "react-icons/ai";
 
 const Sidebar = () => {
     const [search, setSearch] = useState("");
@@ -38,6 +38,14 @@ const Sidebar = () => {
         dispatch(clearNotificationFromUser(user._id));
         dispatch(setMessages([]));
     };
+
+    const sortedUsers = [...(filteredUsers || [])].sort((a, b) => {
+        const aCount = notifications.filter(n => n.senderId === a._id).length;
+        const bCount = notifications.filter(n => n.senderId === b._id).length;
+
+        return bCount - aCount;
+    });
+
 
     const logoutHandler = async () => {
         try {
@@ -69,7 +77,7 @@ const Sidebar = () => {
             return;
         }
 
-        const matchedUsers =  (otherUsers || []).filter((user) =>
+        const matchedUsers = (otherUsers || []).filter((user) =>
             user.fullName.toLowerCase().includes(search.toLowerCase())
         );
 
@@ -109,9 +117,9 @@ const Sidebar = () => {
 
             <div className="divider px-3"></div>
             <OtherUsers
-               users={filteredUsers || []} 
-               notifications={notifications || []} 
-                onUserSelect={onUserSelect}  
+                users={sortedUsers}
+                notifications={notifications || []}
+                onUserSelect={onUserSelect}
             />
 
             <div className="divider bottom-10 px-2">

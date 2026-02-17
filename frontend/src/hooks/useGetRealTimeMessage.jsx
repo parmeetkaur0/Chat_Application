@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setMessages } from "../redux/messageSlice";
-import { setNotification } from "../redux/notificationSlice";  
+import { setNotification } from "../redux/notificationSlice";
 import { useEffect } from "react";
 
 const useGetRealTimeMessage = () => {
@@ -13,8 +13,14 @@ const useGetRealTimeMessage = () => {
         socket?.on("newMessage", (newMessage) => {
             if (newMessage.senderId === selectedUser?._id) {
                 dispatch(setMessages([...messages, newMessage]));
+                
             } else {
-                dispatch(setNotification(newMessage));
+                dispatch(setNotification({
+                    _id: newMessage._id,
+                    senderId: newMessage.senderId || newMessage.sender?._id,
+                    message: newMessage.text
+                }));
+
             }
         });
 
