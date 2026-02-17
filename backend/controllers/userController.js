@@ -99,14 +99,22 @@ export const getOtherUsers = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const userId = req.user._id;  // Assuming you have authentication middleware adding `req.user`
+        if (!req.user || !req.user._id) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const userId = req.user._id;
         const { fullName, username } = req.body;
 
         if (!fullName || !username) {
             return res.status(400).json({ message: 'FullName and Username are required' });
         }
 
-        const existingUser = await User.findOne({ username, _id: { $ne: userId } });
+        const existingUser = await User.findOne({
+            username,
+            _id: { $ne: userId }
+        });
+
         if (existingUser) {
             return res.status(400).json({ message: 'Username already taken' });
         }
@@ -114,12 +122,18 @@ export const updateProfile = async (req, res) => {
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             { fullName, username },
-            { new: true, runValidators: true, select: '-password' }
-        );
+            { new: true, runValidators: true }
+        ).select("-password");
 
         return res.status(200).json({ updatedUser });
+
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        console.error("Update Profile Error:", error);
+
+        if (error.code === 11000) {
+            return res.status(400).json({ message: "Username already exists" });
+        }
+
+        res.status(500).json({ message: error.message });
     }
 };
