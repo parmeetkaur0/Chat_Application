@@ -10,7 +10,7 @@ const OtherUser = ({ user, notifications = [], onUserSelect = () => { } }) => {
     const notificationCount = notifications.filter(n => n.senderId === user._id).length;
 
     const selectedUserHandler = () => {
-        onUserSelect(user);  // <-- Parent handler
+        onUserSelect(user);  
         dispatch(setSelectedUser(user));
         dispatch(clearNotificationFromUser(user._id));
     };
