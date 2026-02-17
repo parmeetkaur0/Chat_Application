@@ -63,7 +63,7 @@ function App() {
       }
     }
 
-  },[authUser , dispatch ]);
+  },[authUser , dispatch , socket ]);
 
   useEffect(() => {
         if (!socket) return;  // 🚨 Prevent attaching listener to null
