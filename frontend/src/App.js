@@ -43,30 +43,31 @@ function App() {
 
  
 
-  useEffect(()=>{
-    if(authUser){
-      const socketio = io(`${process.env.REACT_APP_BASE_URL}`, {
-          query:{
-            userId:authUser._id
-          }
-      });
-      dispatch(setSocket(socketio));
+  useEffect(() => {
+  if (!authUser) return;
 
-      socketio?.on('getOnlineUsers', (onlineUsers)=>{
-        dispatch(setOnlineUsers(onlineUsers))
-      });
-      return () => socketio.close();
-    }else{
-      if(socket){
-        socket.close();
-        dispatch(setSocket(null));
-      }
+  const socketio = io(`${process.env.REACT_APP_BASE_URL}`, {
+    query: {
+      userId: authUser._id
     }
+  });
 
-  },[authUser , dispatch ]);
+  dispatch(setSocket(socketio));
+
+  socketio.on('getOnlineUsers', (onlineUsers) => {
+    dispatch(setOnlineUsers(onlineUsers));
+  });
+
+  return () => {
+    socketio.close();
+    dispatch(setSocket(null));
+  };
+
+}, [authUser, dispatch]);
+
 
   useEffect(() => {
-        if (!socket) return;  // 🚨 Prevent attaching listener to null
+        if (!socket) return;  
 
         const handleNewMessage = (message) => {
             console.log("Received newMessage via socket:", message);
