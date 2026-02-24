@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
     try {
-        const { fullName, username, password, confirmPassword, gender } = req.body;
-        if (!fullName || !username || !password || !confirmPassword || !gender) {
+        const { fullName, username,email, password, confirmPassword, gender } = req.body;
+        if (!fullName || !username || !email || !password || !confirmPassword || !gender) {
             return res.status(400).json({ message: "All fields are required" });
         }
         if (password !== confirmPassword) {
@@ -16,6 +16,11 @@ export const register = async (req, res) => {
         if (user) {
             return res.status(400).json({ message: "Username already exit try different" });
         }
+        const userEmail = await User.findOne({ email });
+        if (userEmail) {
+            return res.status(400).json({ message: "User already exist" });
+        }
+       
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // profilePhoto
@@ -24,6 +29,7 @@ export const register = async (req, res) => {
         await User.create({
             fullName,
             username,
+            email,
             password: hashedPassword,
             profilePhoto,
             gender
@@ -39,12 +45,12 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { username, password } = req.body;
-        if (!username || !password) {
+        const { email, password } = req.body;
+        if (!email || !password) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: "Incorrect username or password" });
         }

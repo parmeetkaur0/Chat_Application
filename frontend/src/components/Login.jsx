@@ -7,7 +7,7 @@ import { setAuthUser } from '../redux/userSlice';
 
 const Login = () => {
   const [user, setUser] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const Login = () => {
       console.log(error);
     }
     setUser({
-      username: "",
+      email: "",
       password: ""
     })
   }
@@ -42,14 +42,14 @@ const Login = () => {
 
           <div>
             <label className='label p-2'>
-              <span className='text-base label-text'>Username</span>
+              <span className='text-base label-text'>Email</span>
             </label>
             <input
-              value={user.username}
-              onChange={(e) => setUser({ ...user, username: e.target.value })}
+              value={user.email}
+              onChange={(e) => setUser({ ...user, email: e.target.value })}
               className='w-full input input-bordered h-10'
-              type="text"
-              placeholder='Username' />
+              type="email"
+              placeholder='Email' />
           </div>
           <div>
             <label className='label p-2'>

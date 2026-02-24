@@ -8,6 +8,7 @@ const Signup = () => {
   const [user, setUser] = useState({
     fullName: "",
     username: "",
+    email:"",
     password: "",
     confirmPassword: "",
     gender: "",
@@ -36,6 +37,7 @@ const Signup = () => {
     setUser({
       fullName: "",
       username: "",
+      email:"",
       password: "",
       confirmPassword: "",
       gender: "",
@@ -67,6 +69,17 @@ const Signup = () => {
               className='w-full input input-bordered h-10'
               type="text"
               placeholder='Username' />
+          </div>
+          <div>
+            <label className='label p-2'>
+              <span className='text-base label-text'>Email</span>
+            </label>
+            <input
+              value={user.email}
+              onChange={(e) => setUser({ ...user, email: e.target.value })}
+              className='w-full input input-bordered h-10'
+              type="email"
+              placeholder='Email' />
           </div>
           <div>
             <label className='label p-2'>
